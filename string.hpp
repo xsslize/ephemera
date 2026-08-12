@@ -165,17 +165,22 @@ namespace String
 	private:
 		uintptr_t LowBlocks[ sizeof...( KeysLow ) ];
 		uintptr_t HighBlocks[ sizeof...( KeysLow ) ];
+		bool Decrypted;
 	public:
 		template< typename L >
 		__forceinline constexpr CString( L Fn, std::integral_constant< size_t, BlocksCount >, std::integral_constant< size_t, Size >, std::index_sequence< Indices... > )
 			: LowBlocks{ ForceFromReg( ( std::integral_constant< uintptr_t, LoadLowStorage< Size >( KeysLow, Bloat, Indices, Fn( ) ) >::value ) )... },
-			HighBlocks{ ForceFromReg( ( std::integral_constant< uintptr_t, LoadHighStorage< Size >( KeysHigh, Bloat, Indices, Fn( ) ) >::value ) )... }
+			HighBlocks{ ForceFromReg( ( std::integral_constant< uintptr_t, LoadHighStorage< Size >( KeysHigh, Bloat, Indices, Fn( ) ) >::value ) )... },
+			Decrypted( false )
 		{
 
 		}
 
 		__forceinline T* Get( )
 		{
+			if ( Decrypted )
+				return reinterpret_cast< T* >( LowBlocks );
+
 			uintptr_t ArrLow[ ]{ ForceFromReg( KeysLow )... };
 			uintptr_t ArrHigh[ ]{ ForceFromReg( KeysHigh )... };
 
@@ -183,6 +188,7 @@ namespace String
 			auto* pKeyHigh = reinterpret_cast< uintptr_t* >( ForceFromReg( reinterpret_cast< uintptr_t >( ArrHigh ) ) );
 
 			( ( Decrypt( &LowBlocks[ 0 ], &HighBlocks[ 0 ], Indices, &pKeyLow[ 0 ], &pKeyHigh[ 0 ] ) ), ... );
+			Decrypted = true;
 
 			return reinterpret_cast< T* >( LowBlocks );
 		}
