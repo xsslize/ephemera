@@ -44,7 +44,7 @@ namespace Wrapped
 		};
 
 	public:
-		CWrapped( ) { }
+		CWrapped( ) : Storage{} { }
 
 		template< typename V >
 		__forceinline void operator=( const V& Value )
