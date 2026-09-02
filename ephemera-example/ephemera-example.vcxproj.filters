@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="invoker">
+      <UniqueIdentifier>{c4169036-e283-4f25-a7d0-3c5c364fde19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modules">
+      <UniqueIdentifier>{296a0922-51c6-482b-8ba0-39c2fad6a2de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obfuscation">
+      <UniqueIdentifier>{aa19b3cc-422b-4563-99dc-d15b28226b58}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\invoker\invoker.cpp">
+      <Filter>invoker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\modules\modules.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ephemera-example.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\invoker\invoker.hpp">
+      <Filter>invoker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\modules\modules.hpp">
+      <Filter>modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\obfuscation\fnv.hpp">
+      <Filter>obfuscation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\obfuscation\immediate.hpp">
+      <Filter>obfuscation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\obfuscation\string.hpp">
+      <Filter>obfuscation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\obfuscation\wrapped.hpp">
+      <Filter>obfuscation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils.hpp" />
+    <ClInclude Include="..\pe.hpp" />
+  </ItemGroup>
+</Project>

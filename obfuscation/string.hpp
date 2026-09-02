@@ -1,15 +1,25 @@
 #pragma once
 
+#ifdef _KERNEL_MODE
 #include <ntddk.h>
+#else
+#include <utility>
+#endif
+
 #include <cstdint>
 #include <emmintrin.h>
 #include <intrin.h>
 
+#ifndef _DEBUG
 #define _( Text ) String::CString( [ ]( ) { return Text; }, \
 		std::integral_constant< size_t, ( sizeof( Text ) / 8 ) + ( sizeof( Text ) % 8 != 0 ) >{ }, \
 		std::integral_constant< size_t, sizeof( Text ) / sizeof( Text[ 0 ] ) >{ }, \
 		std::make_index_sequence< ( sizeof( Text ) / 8 ) + ( sizeof( Text ) % 8 != 0 ) >{ } ).Get( )
+#else
+#define _( Text ) ( Text )
+#endif
 
+#ifdef _KERNEL_MODE
 namespace std
 {
 	template< class T > struct remove_reference { using type = T; };
@@ -51,6 +61,7 @@ namespace std
 	template <size_t N>
 	using make_index_sequence = typename detail::make_index_seq< N >::type;
 }
+#endif
 
 namespace String
 {
@@ -59,22 +70,38 @@ namespace String
 
 	__forceinline uintptr_t ForceFromReg( uintptr_t Value ) noexcept
 	{
+		#ifdef _KERNEL_MODE
 		volatile uintptr_t Reg = Value;
 		return Reg;
+		#else
+		asm( "" : "=r"( Value ) : "0"( Value ) );
+		return Value;
+		#endif
 	}
 
 	__forceinline uint32_t ForceFromReg32( uint32_t Value ) noexcept
 	{
+		#ifdef _KERNEL_MODE
 		volatile uint32_t Reg = Value;
 		return Reg;
+		#else
+		asm( "" : "=r"( Value ) : "0"( Value ) );
+		return Value;
+		#endif
 	}
 
 	__forceinline int32_t ForceFromReg32S( int32_t Value ) noexcept
 	{
+		#ifdef _KERNEL_MODE
 		volatile int32_t Reg = Value;
 		return Reg;
+		#else
+		asm( "" : "=r"( Value ) : "0"( Value ) );
+		return Value;
+		#endif
 	}
 
+	#ifdef _KERNEL_MODE
 	template< typename To, typename From >
 	__forceinline To BitCast( From F )
 	{
@@ -85,6 +112,7 @@ namespace String
 
 		return Result;
 	}
+	#endif
 
 	template< uint32_t Seed >
 	__forceinline constexpr uint32_t Key4( ) noexcept

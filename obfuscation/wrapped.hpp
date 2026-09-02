@@ -3,11 +3,15 @@
 #include "string.hpp"
 #include "fnv.hpp"
 
+#ifndef _DEBUG
 #define CreateWrapped( Type, Name ) Wrapped::CWrapped< Type, \
 	String::Key8< static_cast< uint16_t >( HashNonCrypted( #Name ) ) >( ), \
 	String::Key8< static_cast< uint16_t >( HashNonCrypted( #Name ) * 2 ) >( ), \
 	String::Key8< static_cast< uint16_t >( HashNonCrypted( #Name ) * 3 ) >( ), \
 	String::Key8< static_cast< uint16_t >( HashNonCrypted( #Name ) * 4 ) >( ) > Name
+#else
+#define CreateWrapped( Type, Name ) Wrapped::CWrapped< Type, 0, 0, 0, 0 > Name
+#endif
 
 namespace Wrapped
 {

@@ -1,15 +1,33 @@
 #pragma once
 
+#ifndef _KERNEL_MODE
+#include <bit>
+#endif
+
 #include "wrapped.hpp"
 
+#ifndef _DEBUG
 #define ImmediateVal( Value ) ( Immediate::CImmediate< Value, \
 	String::Key8< static_cast< uint16_t >( HashNonCrypted( #Value ) ) >( ), \
 	String::Key8< static_cast< uint16_t >( HashNonCrypted( #Value ) * 2 ) >( ), \
 	String::Key8< static_cast< uint16_t >( HashNonCrypted( #Value ) * 3 ) >( ) >( ).Get( ) )
 #define ImmediateValT( Type, Value ) ( static_cast< Type >( static_cast< uintptr_t >( ImmediateVal( Value ) ) ) )
 #define FnvHash( String ) ImmediateValT( uintptr_t, HashNonCrypted( String ) )
+
+#ifdef _KERNEL_MODE
 #define FloatVal( Value ) ( String::BitCast< float >( String::ForceFromReg32( String::BitCast< uint32_t >( Value ) ) ) )
 #define DoubleVal( Value ) ( String::BitCast< double >( String::ForceFromReg( String::BitCast< uintptr_t >( Value ) ) ) )
+#else
+#define FloatVal( Value ) ( std::bit_cast< float >( String::ForceFromReg32( std::bit_cast< uint32_t >( Value ) ) ) )
+#define DoubleVal( Value ) ( std::bit_cast< double >( String::ForceFromReg( std::bit_cast< uintptr_t >( Value ) ) ) )
+#endif
+#else
+#define ImmediateVal( _v ) ( _v )
+#define ImmediateValT( _t, _v ) ( static_cast< _t >( _v ) )
+#define FnvHash HashNonCrypted
+#define FloatVal( _float ) ( _float )
+#define DoubleVal( _double ) ( _double )
+#endif
 
 namespace Immediate
 {
