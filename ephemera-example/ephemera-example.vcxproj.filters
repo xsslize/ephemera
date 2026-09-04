@@ -10,6 +10,9 @@
     <Filter Include="obfuscation">
       <UniqueIdentifier>{aa19b3cc-422b-4563-99dc-d15b28226b58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hooks">
+      <UniqueIdentifier>{52991fcd-39bf-4e6c-887d-ec151c42e6e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\invoker\invoker.cpp">
@@ -19,6 +22,9 @@
       <Filter>modules</Filter>
     </ClCompile>
     <ClCompile Include="ephemera-example.cpp" />
+    <ClCompile Include="..\hooks\hooks.cpp">
+      <Filter>hooks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\invoker\invoker.hpp">
@@ -41,5 +47,8 @@
     </ClInclude>
     <ClInclude Include="..\utils.hpp" />
     <ClInclude Include="..\pe.hpp" />
+    <ClInclude Include="..\hooks\hooks.hpp">
+      <Filter>hooks</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

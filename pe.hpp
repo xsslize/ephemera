@@ -4,7 +4,7 @@
 
 #include "obfuscation/immediate.hpp"
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 #define _FORCEINLINE __forceinline
 #else
 #define _FORCEINLINE 

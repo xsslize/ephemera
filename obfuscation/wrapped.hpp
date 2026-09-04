@@ -16,6 +16,7 @@
 namespace Wrapped
 {
 	template< typename T, uintptr_t Key1, uintptr_t Key2, uintptr_t Bloat1, uintptr_t Bloat2 >
+	#ifndef _DEBUG
 	class CWrapped
 	{
 	private:
@@ -54,7 +55,7 @@ namespace Wrapped
 		__forceinline void operator=( const V& Value )
 		{
 			U128T Init;
-			Init.LongLow = ~( uintptr_t )( Value );
+			Init.LongLow = ~( uintptr_t ) ( Value );
 
 			U128T Perm;
 			Perm.LongLow = String::ForceFromReg( Bloat1 );
@@ -97,7 +98,7 @@ namespace Wrapped
 			Src.B13 = Wrapped.Hi.H5; Src.B6 = Wrapped.B12;
 			Src.B5 = Wrapped.B14; Src.B14 = Wrapped.Hi.H2;
 
-			return ( T )( ~Src.LongLow );
+			return ( T ) ( ~Src.LongLow );
 		}
 
 		explicit __forceinline operator bool( ) const
@@ -115,4 +116,38 @@ namespace Wrapped
 			return Get( );
 		}
 	};
+	#else
+	class CWrapped
+	{
+	private:
+		T Storage;
+
+	public:
+		template< typename V >
+		__forceinline void operator=( const V& Value )
+		{
+			Storage = ( T ) Value;
+		}
+
+		__forceinline T Get( ) const
+		{
+			return Storage;
+		}
+
+		__forceinline operator bool( ) const
+		{
+			return Get( ) != 0;
+		}
+
+		__forceinline operator T( ) const
+		{
+			return Get( );
+		}
+
+		__forceinline T operator->( )
+		{
+			return Get( );
+		}
+	};
+	#endif
 }

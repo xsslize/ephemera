@@ -98,11 +98,13 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\hooks\hooks.cpp" />
     <ClCompile Include="..\invoker\invoker.cpp" />
     <ClCompile Include="..\modules\modules.cpp" />
     <ClCompile Include="ephemera-example.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\hooks\hooks.hpp" />
     <ClInclude Include="..\invoker\invoker.hpp" />
     <ClInclude Include="..\modules\modules.hpp" />
     <ClInclude Include="..\obfuscation\fnv.hpp" />
